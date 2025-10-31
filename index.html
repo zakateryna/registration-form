@@ -23,14 +23,14 @@
         <h2 class="mb-4">Registration</h2>
         <form id="registrationForm" novalidate>
             <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" required>
-                <div id="nameError" class="error-message"></div>
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="firstName" required>
+                <div id="firstNameError" class="error-message"></div>
             </div>
             <div class="mb-3">
-                <label for="surname" class="form-label">Surname</label>
-                <input type="text" class="form-control" id="surname" required>
-                <div id="surnameError" class="error-message"></div>
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="lastName" required>
+                <div id="lastNameError" class="error-message"></div>
             </div>
             <div class="mb-3">
                 <label for="age" class="form-label">Age</label>
@@ -51,8 +51,9 @@
                 <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" id="password" required>
                 <div id="passwordError" class="error-message"></div>
-                <small class="form-text text-muted">Must be at least 8 chars, with a number, a capital and a lowercase
-                    letter.</small>
+                <small class="form-text text-muted">
+                    Must be at least 8 chars, with a number, a capital and a lowercase letter.
+                </small>
             </div>
             <div class="form-check form-switch mb-3">
                 <input class="form-check-input" type="checkbox" id="isMarried">
@@ -65,9 +66,10 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
+
     <script>
         function validateName(name) {
-            return /^[A-Za-zÀ-ÿ\s]{2,}$/.test(name);
+            return /^[A-Za-zÀ-ÿ\s'’-]{2,}$/.test(name);
         }
 
         function validateEmail(email) {
@@ -86,10 +88,9 @@
         document.getElementById('registrationForm').addEventListener('submit', async function (event) {
             event.preventDefault();
 
-
             const formData = {
-                name: document.getElementById('name'),
-                surname: document.getElementById('surname'),
+                firstName: document.getElementById('firstName'),
+                lastName: document.getElementById('lastName'),
                 age: document.getElementById('age'),
                 address: document.getElementById('address'),
                 email: document.getElementById('email'),
@@ -97,8 +98,8 @@
             };
 
             const errors = {
-                name: document.getElementById('nameError'),
-                surname: document.getElementById('surnameError'),
+                firstName: document.getElementById('firstNameError'),
+                lastName: document.getElementById('lastNameError'),
                 age: document.getElementById('ageError'),
                 address: document.getElementById('addressError'),
                 email: document.getElementById('emailError'),
@@ -108,17 +109,18 @@
             let valid = true;
 
             for (const key in formData) {
-                resetValidation(key, key + 'Error');
+                resetValidation(formData[key].id, key + 'Error');
             }
 
-            if (!validateName(formData.name.value.trim())) {
-                errors.name.textContent = 'Nome non valido. Minimo 2 caratteri, solo lettere e spazi.';
-                formData.name.classList.add('is-invalid');
+            if (!validateName(formData.firstName.value.trim())) {
+                errors.firstName.textContent = 'Nome non valido. Minimo 2 caratteri, solo lettere e spazi.';
+                formData.firstName.classList.add('is-invalid');
                 valid = false;
             }
-            if (!validateName(formData.surname.value.trim())) {
-                errors.surname.textContent = 'Cognome non valido. Minimo 2 caratteri, solo lettere e spazi.';
-                formData.surname.classList.add('is-invalid');
+
+            if (!validateName(formData.lastName.value.trim())) {
+                errors.lastName.textContent = 'Cognome non valido. Minimo 2 caratteri, solo lettere e spazi.';
+                formData.lastName.classList.add('is-invalid');
                 valid = false;
             }
 
@@ -152,8 +154,8 @@
             }
 
             const user = {
-                name: formData.name.value.trim(),
-                surname: formData.surname.value.trim(),
+                firstName: formData.firstName.value.trim(),
+                lastName: formData.lastName.value.trim(),
                 age: ageValue,
                 address: formData.address.value.trim(),
                 email: formData.email.value.trim(),
